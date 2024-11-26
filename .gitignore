@@ -1,2 +1,6 @@
-correction/
-.idea/
+.metadata/
+.classpath
+.project
+.settings/
+*.log
+bin/
