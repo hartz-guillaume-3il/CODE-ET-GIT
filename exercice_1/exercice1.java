@@ -1,23 +1,45 @@
 public class FactureManager {
 
-    // Calcul le total d'une facture
-    public double calculerFacture(String typeProduit, int quantite, double prixUnitaire) {
-        double total = quantite * prixUnitaire;
+	private double alimentaire = 0.05;
+	private double electronique = 0.1;
+	private double luxe = 0.15;
+	private double reducSup = 0.05;
 
-        // reduction selon la catégorie
-        if (typeProduit.equals("Alimentaire")) {
-            total -= total * 0.05; // Réduction de 5%
-        } else if (typeProduit.equals("Electronique")) {
-            total -= total * 0.1; // Réduction de 10%
-        } else if (typeProduit.equals("Luxe")) {
-            total -= total * 0.15; // Réduction de 15%
-        }
+	// Calcul le total d'une facture
+	public double CalculerFacture(String typeProduit, int quantite, double prixUnitaire) {
+		double total = quantite * prixUnitaire;
+		total = ReductionBase(typeProduit, total);
+		total = ReductionSupplementaire(total);
 
-        // Reduction sur le total
-        if (total > 1000) {
-            total -= total * 0.05; // Réduction supplémentaire de 5% pour les gros montants
-        }
+		return total;
+	}
 
-        return total;
-    }
+	private double ReductionBase(String typeProduit, double total) {
+		double reducBase = 0.0;
+		// reduction selon la catégorie
+		switch (typeProduit) {
+		case "Alimentaire":
+			reducBase = alimentaire;
+			break;
+		case "Electronique":
+			reducBase = electronique;
+			break;
+		case "Luxe":
+			reducBase = luxe;
+			break;
+		default:
+			System.out.println("Type de produit inconnu, aucune réduction de base appliquée.");
+			break;
+		}
+
+		return total - (total * reducBase);
+	}
+
+	private double ReductionSupplementaire(double total) {
+		// Reduction sur le total
+		if (total > 1000) {
+			total -= total * reducSup;
+		}
+		return total;
+	}
 }
